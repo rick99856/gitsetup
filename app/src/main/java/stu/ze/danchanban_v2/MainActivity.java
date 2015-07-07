@@ -39,6 +39,8 @@ public class MainActivity extends Activity {
         ed_pwd = (EditText)findViewById(R.id.ed_pwd);
         btn_login =(Button)findViewById(R.id.btn_login);
 
+
+        Toast.makeText(this,"Hello world",Toast.LENGTH_LONG);
         ed_id.setText("s13113241");
         ed_pwd.setText("zx0956950105");
         btn_login.setOnClickListener(new Button.OnClickListener() {
