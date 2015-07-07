@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
         btn_login =(Button)findViewById(R.id.btn_login);
 
 
-        Toast.makeText(this,"Hello world",Toast.LENGTH_LONG);
+        Toast.makeText(this,"Hello world",Toast.LENGTH_LONG).show();
         ed_id.setText("s13113241");
         ed_pwd.setText("zx0956950105");
         btn_login.setOnClickListener(new Button.OnClickListener() {
