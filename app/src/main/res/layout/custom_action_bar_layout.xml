@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:iconifiedByDefault="false"
             android:inputType="textFilter"
-            android:queryHint="找找吧" >
+            android:queryHint="用產編進行尋找" >
         </SearchView>
 
 </LinearLayout>
