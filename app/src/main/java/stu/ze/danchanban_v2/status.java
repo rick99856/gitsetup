@@ -14,6 +14,10 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -29,6 +33,8 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
     Object[] names;
     ArrayAdapter<String> adapter;
     ArrayList<String> mAllList = new ArrayList<String>();
+    JSONArray Arr;
+    String [] Brr;
 
 
 
@@ -41,35 +47,29 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
 
         String listna = bundle.getString("listname");
         String s = bundle.getString("ky");
-        Log.v("get the key",s.toString());
+        Log.v("get the key", s.toString());
 
         initActionbar();
-        names = loadData();
+        //names = loadData();
         listView = (ListView) findViewById(R.id.list);
-        listView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),
-                android.R.layout.simple_expandable_list_item_1, names));
+//        listView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),
+//                android.R.layout.simple_expandable_list_item_1, names));
 
         //listView.setTextFilterEnabled(true);
         searchView.setOnQueryTextListener(this);
         searchView.setSubmitButtonEnabled(false);
-        //SearchView¥h±¼¡]­×§ï¡^·j¯Á®Øªº­I´º ­×§ï¥ú?
-        //setSearchViewBackground(searchView);
 
+        params.clear();
+        params.add(new BasicNameValuePair("action", "get_list_all_data"));
+        params.add(new BasicNameValuePair("access_token", s.toString()));
+        params.add(new BasicNameValuePair("list_name",listna.toString()));
 
-
-//        params.clear();
-//        params.add(new BasicNameValuePair("action", "get_list_all_data"));
-//        params.add(new BasicNameValuePair("access_token", s.toString()));
-////                Log.v("btn3",txt_ky.getText().toString());
-//        params.add(new BasicNameValuePair("list_name", listna.toString()));
-//        //Log.v("keyid", ed_cban.getText().toString());
-//
-//        new LoadingDataAsyncTask().execute();
+        new LoadingDataAsyncTask().execute();
 
     }
 
     public void initActionbar() {
-        // ¦Û©w????
+        // è‡ªå®šä¹‰æ ‡é¢˜æ 
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
         getActionBar().setDisplayShowCustomEnabled(true);
@@ -90,7 +90,7 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
         mAllList.add("fd");
         mAllList.add("cf");
         mAllList.add("re");
-        mAllList.add("§Ú");
+        mAllList.add("æˆ‘");
         return mAllList.toArray();
     }
 
@@ -112,7 +112,7 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
         ArrayList<String> mSearchList = new ArrayList<String>();
         for (int i = 0; i < mAllList.size(); i++) {
             int index = mAllList.get(i).indexOf(name);
-            // ¦s¦b¤Ç°tªº?Õu
+
             if (index != -1) {
                 mSearchList.add(mAllList.get(i));
             }
@@ -125,40 +125,7 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
     }
 
 
-//    public void setSearchViewBackground(SearchView searchView) {
-//        try {
-//            Class<?> argClass = searchView.getClass();
-//            // «ü©w¬Y?¨p¦³?©Ê
-//            Field ownField = argClass.getDeclaredField("mSearchPlate"); // ª`·NmSearchPlateªº­I´º¬OstateListDrawable(¤£¦P??¤£¦Pªº?¤ù)
-//            // ©Ò¥H¤£¯à¥ÎBitmapDrawable
-//            // setAccessible ¥¦¬O¥Î??¸m¬O§_¦³?­­??¤Ï®g?¤¤ªº¨p¦³?©Êªº¡A¥u¦³?¸m?true?¤~¥i¥H??¡AÀq??false
-//            ownField.setAccessible(true);
-//            View mView = (View) ownField.get(searchView);
-//            mView.setBackgroundDrawable(getResources().getDrawable(
-//                    R.drawable.ic_menu_search));
-//
-//            // «ü©w¬Y?¨p¦³?©Ê
-//            Field mQueryTextView = argClass.getDeclaredField("mQueryTextView");
-//            mQueryTextView.setAccessible(true);
-//            Class<?> mTextViewClass = mQueryTextView.get(searchView).getClass()
-//                    .getSuperclass().getSuperclass().getSuperclass();
-//
-//            // mCursorDrawableRes¥ú??¤ùIdªº?©Ê
-//            // ???©Ê¬OTextViewªº?©Ê¡A©Ò¥H­n¥ÎmQueryTextView¡]SearchAutoComplete¡^ªº¤÷?¡]AutoCompleteTextView¡^ªº¤÷
-//            // ?( EditText¡^ªº¤÷?(TextView)
-//            Field mCursorDrawableRes = mTextViewClass
-//                    .getDeclaredField("mCursorDrawableRes");
-//
-//            // setAccessible ¥¦¬O¥Î??¸m¬O§_¦³?­­??¤Ï®g?¤¤ªº¨p¦³?©Êªº¡A¥u¦³?¸m?true?¤~¥i¥H??¡AÀq??false
-//            mCursorDrawableRes.setAccessible(true);
-//            mCursorDrawableRes.set(mQueryTextView.get(searchView),
-//                    R.drawable.ic_action_search);// ª`·N²Ä¤@???«ù¦³???©Ê(mQueryTextView)ªº?¶H(mSearchView)
-//            // ¥ú?¥²?¬O¤@??¤ù¤£¯à¬O?¦â¡A¦]?¥ú?¦³???¤ù¡A¤@?¬O²Ä¤@¦¸?±oµJ?ªº?­Ôªº??ªº?¤ù¡A¤@?¬O¦Z?¦³?®e?­Ôªº?¤ù¡A¦pªG¥Î?¦â¶ñ¥Rªº?¡A´N?¥¢¥h??ªº¨º??¤ù¡A?¦â¶ñ¥Rªº??µu¤å¦r©M¥ú?ªº¶ZÖÃ¡]¬Y¨Ç¦r¥À?­I¥ú?ÂĞ?¤@³¡¤À¡^¡C
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//    }
+
     class LoadingDataAsyncTask extends AsyncTask<String, Integer, String> {
 
 
@@ -175,26 +142,27 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
 
 
 
-//                1¬O¥Î¨Ó¨ú±oLISTªº
 
-//                    try {
-//                        JSONObject mainObject = new JSONObject(result);
-//                        //JSONObject uniObject = mainObject.getJSONObject("data");
-//                        Arr = mainObject.getJSONArray("data");
-//                        Brr= new String[Arr.length()];
-//
-//                        for(int i =0;i<Arr.length();i++){
-//                            JSONObject qq = Arr.getJSONObject(i);
-//                            String str = qq.getString("list_name");
-//                            Brr[i] = str;
-//                            Log.v("JsonArr",str);
-//
-//                        }
-//                        listarr = new ArrayAdapter<String>(status.this,android.R.layout.simple_spinner_item, Brr);
-//                        list.setAdapter(listarr);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
+
+                    try {
+                        JSONObject mainObject = new JSONObject(result);
+                        Log.v("getjson values",mainObject.toString());
+                        //JSONObject uniObject = mainObject.getJSONObject("data");
+                        Arr = mainObject.getJSONArray("data");
+                        Brr= new String[Arr.length()];
+
+                        for(int i =0;i<Arr.length();i++){
+                            JSONObject qq = Arr.getJSONObject(i);
+                            String str = qq.getString("AssetNo");
+                            Brr[i] = str;
+                            Log.v("JsonArr",str);
+
+                        }
+                        listView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),
+                            android.R.layout.simple_expandable_list_item_1, Brr));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
 
 
@@ -221,7 +189,7 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
         public  String  showData() {
             String a = null;
             try {
-                a=usepost.sendPost("http://assets.ecc.stu.edu.tw/api.php", getQuery(params));
+                a=usepost.sendPost("http://keroro.stu.edu.tw/~s11113257/stu-assets/api.php", getQuery(params));
                 Log.d("parmes",getQuery(params));
                 return a;
             } catch (UnsupportedEncodingException e) {
