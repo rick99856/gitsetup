@@ -168,8 +168,8 @@ public class status extends Activity implements SearchView.OnQueryTextListener{
                             Log.v("JsonArr",reba);
 
                         }
-//                        listView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),
-//                            android.R.layout.simple_expandable_list_item_1, Brr));
+                        listView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),
+                            android.R.layout.simple_expandable_list_item_1, mAllList));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
