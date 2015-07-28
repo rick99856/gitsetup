@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
         public  String  showData() {
             String a = null;
             try {
-                a=usepost.sendPost("http://assets.ecc.stu.edu.tw/api.php", getQuery(params));
+                a=usepost.sendPost("http://keroro.stu.edu.tw/~s11113257/stu-assets/api.php", getQuery(params));
 
                 return a;
             } catch (UnsupportedEncodingException e) {
